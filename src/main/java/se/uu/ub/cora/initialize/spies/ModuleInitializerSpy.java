@@ -20,8 +20,17 @@ package se.uu.ub.cora.initialize.spies;
 
 import se.uu.ub.cora.initialize.ModuleInitializer;
 import se.uu.ub.cora.initialize.SelectOrder;
+import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
+import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
 public class ModuleInitializerSpy implements ModuleInitializer {
+	public MethodCallRecorder MCR = new MethodCallRecorder();
+	public MethodReturnValues MRV = new MethodReturnValues();
+
+	public ModuleInitializerSpy() {
+		MCR.useMRV(MRV);
+		// MRV.setDefaultReturnValuesSupplier("createAndStoreRecord", DataRecordSpy::new);
+	}
 
 	@Override
 	public <T extends SelectOrder> T loadOneImplementationBySelectOrder(Class<T> factoryClass) {
