@@ -24,7 +24,7 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import se.uu.ub.cora.initialize.ModuleInitializer;
+import se.uu.ub.cora.initialize.SelectOrder;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 import se.uu.ub.cora.testutils.spies.MCRSpy;
@@ -51,30 +51,37 @@ public class ModuleInitializeSpyTest {
 	}
 
 	@Test
-	public void testDefaultCreateAndStoreRecord() throws Exception {
-		// assertTrue(moduleInitializer.createAndStoreRecord("authToken", "type",
-		// null) instanceof DataRecordSpy);
+	public void testLoadOneImplementationBySelectOrder() throws Exception {
+		moduleInitializer.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
+				SelectOrderSpy::new);
+		Class<SelectOrderSpy> factoryClass = SelectOrderSpy.class;
+		SelectOrderSpy returnedValue = moduleInitializer
+				.loadOneImplementationBySelectOrder(factoryClass);
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "factoryClass", factoryClass);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
 
 	@Test
-	public void testCreateAndStoreRecord() throws Exception {
-		// moduleInitializer.MCR = MCRSpy;
-		// MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
-		// DataRecordSpy::new);
-		//
-		// DataGroupSpy recordGroup = new DataGroupSpy();
-		// DataRecord retunedValue = moduleInitializer.createAndStoreRecord("authToken", "type",
-		// recordGroup);
-		//
-		// mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
-		// mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "authToken", "authToken");
-		// mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "type", "type");
-		// mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "recordGroup", recordGroup);
-		// mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, retunedValue);
+	public void testLoadTheOnlyImplementationBySelectOrder() throws Exception {
+		moduleInitializer.MCR = MCRSpy;
+		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV, String::new);
+		Class<String> factoryClass = String.class;
+		String returnedValue = moduleInitializer.loadTheOnlyExistingImplementation(factoryClass);
+
+		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
+		mcrForSpy.assertParameter(ADD_CALL_AND_RETURN_FROM_MRV, 0, "factoryClass", factoryClass);
+		mcrForSpy.assertReturn(ADD_CALL_AND_RETURN_FROM_MRV, 0, returnedValue);
 	}
 
-	@Test
-	public void testName() throws Exception {
-		ModuleInitializer moduleInitializer = new ModuleInitializerSpy();
+	class SelectOrderSpy implements SelectOrder {
+		@Override
+		public int getOrderToSelectImplementionsBy() {
+			return 0;
+		}
+
 	}
+
 }

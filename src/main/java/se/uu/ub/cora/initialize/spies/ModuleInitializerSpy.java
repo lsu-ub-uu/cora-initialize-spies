@@ -29,19 +29,15 @@ public class ModuleInitializerSpy implements ModuleInitializer {
 
 	public ModuleInitializerSpy() {
 		MCR.useMRV(MRV);
-		// MRV.setDefaultReturnValuesSupplier("createAndStoreRecord", DataRecordSpy::new);
 	}
 
 	@Override
 	public <T extends SelectOrder> T loadOneImplementationBySelectOrder(Class<T> factoryClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return (T) MCR.addCallAndReturnFromMRV("factoryClass", factoryClass);
 	}
 
 	@Override
 	public <T> T loadTheOnlyExistingImplementation(Class<T> factoryClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return (T) MCR.addCallAndReturnFromMRV("factoryClass", factoryClass);
 	}
-
 }
