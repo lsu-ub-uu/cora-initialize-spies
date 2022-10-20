@@ -12,10 +12,10 @@
 	<name>initialize-spies</name>
 	
 	<properties>
-		<initialize.version>1.0-SNAPSHOT</initialize.version>
+		<initialize.version>1.0.0</initialize.version>
 		<logger.version>2.5.0</logger.version>
-		<testutils.version>1.6-SNAPSHOT</testutils.version>
-		<testutils-spies.version>1.0-SNAPSHOT</testutils-spies.version>
+		<testutils.version>1.6.0</testutils.version>
+		<testutils-spies.version>1.0.0</testutils-spies.version>
 	</properties>
 	
 	<scm>
