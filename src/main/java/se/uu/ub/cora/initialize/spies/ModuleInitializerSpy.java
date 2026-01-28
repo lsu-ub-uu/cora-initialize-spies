@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Uppsala University Library
+ * Copyright 2022, 2026 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -18,8 +18,10 @@
  */
 package se.uu.ub.cora.initialize.spies;
 
+import se.uu.ub.cora.initialize.ImplementationForTypes;
 import se.uu.ub.cora.initialize.ModuleInitializer;
 import se.uu.ub.cora.initialize.SelectOrder;
+import se.uu.ub.cora.initialize.SelectType;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
 import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
@@ -32,12 +34,18 @@ public class ModuleInitializerSpy implements ModuleInitializer {
 	}
 
 	@Override
-	public <T extends SelectOrder> T loadOneImplementationBySelectOrder(Class<T> factoryClass) {
-		return (T) MCR.addCallAndReturnFromMRV("factoryClass", factoryClass);
+	public <T extends SelectOrder> T loadOneImplementationBySelectOrder(Class<T> classToLoad) {
+		return (T) MCR.addCallAndReturnFromMRV("classToLoad", classToLoad);
 	}
 
 	@Override
-	public <T> T loadTheOnlyExistingImplementation(Class<T> factoryClass) {
-		return (T) MCR.addCallAndReturnFromMRV("factoryClass", factoryClass);
+	public <T> T loadTheOnlyExistingImplementation(Class<T> classToLoad) {
+		return (T) MCR.addCallAndReturnFromMRV("classToLoad", classToLoad);
+	}
+
+	@Override
+	public <T extends SelectType> ImplementationForTypes<T> loadOneImplementationOfEachType(
+			Class<T> classToLoad) {
+		return (ImplementationForTypes<T>) MCR.addCallAndReturnFromMRV("classToLoad", classToLoad);
 	}
 }
