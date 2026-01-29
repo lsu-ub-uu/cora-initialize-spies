@@ -4,7 +4,7 @@
 module se.uu.ub.cora.initialize.spies {
 
 	requires org.testng;
-	requires se.uu.ub.cora.initialize;
+	requires transitive se.uu.ub.cora.initialize;
 	requires transitive se.uu.ub.cora.testutils;
 
 	exports se.uu.ub.cora.initialize.spies;

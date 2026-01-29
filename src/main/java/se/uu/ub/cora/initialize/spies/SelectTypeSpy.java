@@ -18,15 +18,22 @@
  */
 package se.uu.ub.cora.initialize.spies;
 
-import se.uu.ub.cora.initialize.ImplementationForTypes;
 import se.uu.ub.cora.initialize.SelectType;
+import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
+import se.uu.ub.cora.testutils.mrv.MethodReturnValues;
 
-public class ImplementationForTypesSpy implements ImplementationForTypes {
+public class SelectTypeSpy implements SelectType {
 
-	@Override
-	public SelectType getImplementionByType(String type) {
-		// TODO Auto-generated method stub
-		return null;
+	public MethodCallRecorder MCR = new MethodCallRecorder();
+	public MethodReturnValues MRV = new MethodReturnValues();
+
+	public SelectTypeSpy() {
+		MCR.useMRV(MRV);
+		MRV.setDefaultReturnValuesSupplier("getTypeToSelectImplementionsBy", () -> "someType");
 	}
 
+	@Override
+	public String getTypeToSelectImplementionsBy() {
+		return (String) MCR.addCallAndReturnFromMRV();
+	}
 }

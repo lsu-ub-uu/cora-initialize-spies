@@ -24,7 +24,7 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import se.uu.ub.cora.initialize.ImplementationForTypes;
+import se.uu.ub.cora.initialize.InitializedTypes;
 import se.uu.ub.cora.initialize.SelectOrder;
 import se.uu.ub.cora.initialize.SelectType;
 import se.uu.ub.cora.testutils.mcr.MethodCallRecorder;
@@ -81,10 +81,10 @@ public class ModuleInitializeSpyTest {
 	public void testLoadOneImplementationOfEachType() {
 		moduleInitializer.MCR = MCRSpy;
 		MCRSpy.MRV.setDefaultReturnValuesSupplier(ADD_CALL_AND_RETURN_FROM_MRV,
-				ImplementationForTypesSpy::new);
+				InitializedTypesSpy::new);
 		Class<SelectTypeSpy> classToLoad = SelectTypeSpy.class;
 
-		ImplementationForTypes<SelectTypeSpy> returnedValue = moduleInitializer
+		InitializedTypes<SelectTypeSpy> returnedValue = moduleInitializer
 				.loadOneImplementationOfEachType(classToLoad);
 
 		mcrForSpy.assertMethodWasCalled(ADD_CALL_AND_RETURN_FROM_MRV);
